@@ -3,34 +3,46 @@
  *  Copyright 2021 Dave Gershman
  */
 
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class App
 {
-    public static double GetBAC(double A, double W, double r, double H) {
-        return (A * 5.14 / W * r) - 0.015 * H;
+    public static String GetNumSuffix(int num) {
+        if (num % 10 == 1 && num % 100 != 11)
+            return "st";
+
+        if (num % 10 == 2 && num % 100 != 12)
+            return "nd";
+
+        if (num % 10 == 3 && num % 100 != 13)
+            return "rd";
+
+        return "th";
     }
 
     public static void main( String[] args )
     {
-        int gender = Input.GetInt("Enter a 1 if you are male or a 2 if you are female: ");
-        double oz_alcohol = Input.GetDouble("How many ounces of alcohol did you have? ");
-        double weight = Input.GetDouble("What is your weight in pounds? ");
-        double hours = Input.GetDouble("How many hours has it been since your last drink? ");
+        int numCount = Input.GetInt("How many numbers are you comparing? ");
 
-        double r = 0f;
-        if (gender == 1)
-            r = 0.73f;
-        else if (gender == 2)
-            r = 0.66f;
+        ArrayList<Integer> nums = new ArrayList<Integer>();
 
-        double BAC = GetBAC(oz_alcohol, weight, r, hours);
+        int largestNum = -2147483648;
 
-        System.out.printf("Your BAC is %.6f\n", BAC);
+        for (int i = 1; i <= numCount; i++) {
+            int num = Input.GetInt("Enter the " + i + GetNumSuffix(i) + " number: ");
 
-        if (BAC >= 0.08)
-            System.out.print("It is not legal for you to drive.");
-        else
-            System.out.print("It is legal for you to drive.");
+            if (nums.contains(num)) {
+                System.out.println("Already entered this number, try again.");
+                i--;
+            }
+            else {
+                nums.add(num);
+
+                if (num > largestNum)
+                    largestNum = num;
+            }
+        }
+
+        System.out.printf("The largest number is %d.", largestNum);
     }
 }
