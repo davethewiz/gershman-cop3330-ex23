@@ -3,46 +3,24 @@
  *  Copyright 2021 Dave Gershman
  */
 
-import java.util.ArrayList;
-
 public class App
 {
-    public static String GetNumSuffix(int num) {
-        if (num % 10 == 1 && num % 100 != 11)
-            return "st";
-
-        if (num % 10 == 2 && num % 100 != 12)
-            return "nd";
-
-        if (num % 10 == 3 && num % 100 != 13)
-            return "rd";
-
-        return "th";
-    }
-
     public static void main( String[] args )
     {
-        int numCount = Input.GetInt("How many numbers are you comparing? ");
+        Message root = new Message("Is the car silent when you turn the key?");
+            root.yes = new Message("Are the terminals corroded?");
+                root.yes.yes = new Message("Clean terminals and try starting again.");
+                root.yes.no = new Message("Replace cables and try again.");
+            root.no = new Message("Does the car make a slicking noise?");
+                root.no.yes = new Message("Replace the battery.");
+                root.no.no = new Message("Does the car crank up but fail to start?");
+                    root.no.no.yes = new Message("Check spark plug connections.");
+                    root.no.no.no = new Message("Does the engine start then die?");
+                        root.no.no.no.yes = new Message("Does your car have fuel injection?");
+                            root.no.no.no.yes.yes = new Message("Get it in for service");
+                            root.no.no.no.yes.no = new Message("Check to ensure the choke is opening and closing.");
+                        root.no.no.no.no = new Message("This should not be possible.");
 
-        ArrayList<Integer> nums = new ArrayList<Integer>();
-
-        int largestNum = -2147483648;
-
-        for (int i = 1; i <= numCount; i++) {
-            int num = Input.GetInt("Enter the " + i + GetNumSuffix(i) + " number: ");
-
-            if (nums.contains(num)) {
-                System.out.println("Already entered this number, try again.");
-                i--;
-            }
-            else {
-                nums.add(num);
-
-                if (num > largestNum)
-                    largestNum = num;
-            }
-        }
-
-        System.out.printf("The largest number is %d.", largestNum);
+        root.PrintMessage();
     }
 }
